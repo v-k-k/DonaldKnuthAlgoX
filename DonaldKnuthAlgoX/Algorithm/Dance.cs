@@ -13,6 +13,8 @@ namespace DonaldKnuthAlgoX.Algorithm
         Header[] headers;
         Stack<int> answer = new Stack<int>();
 
+        //delegate 
+
         public Dance(int columns)
         {
             root = new Header(-1);
@@ -30,15 +32,15 @@ namespace DonaldKnuthAlgoX.Algorithm
             Cell first = null;
             foreach(int x in ones)
             {
-                Cell cell = new Cell(headers[x]);
-                cell.row = row;
-                headers[x].InsertUp(cell);
-                headers[x].size++;
-
                 if (x <= last)
                     throw new ArgumentException(
                         "Column indexes must be in increment order");
                 last = x;
+
+                Cell cell = new Cell(headers[x]);
+                cell.row = row;
+                headers[x].InsertUp(cell);
+                headers[x].size++;
 
                 if (first == null)
                     first = cell;
@@ -47,19 +49,33 @@ namespace DonaldKnuthAlgoX.Algorithm
             }
         }
 
-        public void Go(int step)
+        int answersCount = 0;
+
+        public IEnumerable<Stack<int>> Go(int step)
         {
-            Console.WriteLine(step);
+            //Console.WriteLine(step);
             //while (head.size == 0 && head != root)
             //    head = (Header)head.R;
+            if (step < 7)
+            {
+                yield return answer;
+            }
             
             if (root.R == root)
             {
-                Console.WriteLine("FOUND ANSWER");
-                return;
+                answersCount++;
+                Console.WriteLine($"\n\nFOUND ANSWER!!!\nTotal answers {answersCount}\n\n");
+                yield return answer;
             }
 
             Header head = (Header)root.R;
+            int minSize = head.size;
+            for (Cell cell = head; cell != root; cell = cell.R)
+                if (((Header)cell).size < minSize)
+                {
+                    minSize = ((Header)cell).size;
+                    head = (Header)cell;
+                }
 
             Cover(head);
             for (Cell cell = head.D; cell != head; cell = cell.D)
@@ -68,7 +84,8 @@ namespace DonaldKnuthAlgoX.Algorithm
                 for (Cell nCell = cell.R; nCell != cell; nCell = nCell.R)
                     Cover(nCell.H);
 
-                Go(step + 1);
+                foreach (var partAnsw in Go(step + 1))
+                    yield return partAnsw;
 
                 answer.Pop();
                 for (Cell nCell = cell.L; nCell != cell; nCell = nCell.L)

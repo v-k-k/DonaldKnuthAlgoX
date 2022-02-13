@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace DonaldKnuthAlgoX.Cells
 {
     public class Cell
     {
         public int row;
-        public Cell L { get; set; }
-        public Cell R { get; set; }
-        public Cell U { get; set; }
-        public Cell D { get; set; }
-        public Header H { get; set; }
+        public Cell L;
+        public Cell R;
+        public Cell U;
+        public Cell D;
+        public Header H;
 
         public Cell(Header header)
         {

@@ -9,7 +9,7 @@ namespace DonaldKnuthAlgoX.Pentamimo
 {
     public class Pentamimo
     {
-        public string names = "FILNPTUVWXYZ";
+        public string names = "FILNPTUVWXYZ ";
         public Figure[] figures;
 
         public Pentamimo(int range = 12)
@@ -79,17 +79,17 @@ namespace DonaldKnuthAlgoX.Pentamimo
 
             figures[7].Total = 4;                                // V
             figures[7].Variants = new Variant[figures[7].Total];
-            figures[7].Variants[0].Y = new int[] { 0, 0, 0, 1, 2 }; figures[7].Variants[0].Y = new int[] { 0, 1, 2, 2, 2 };
-            figures[7].Variants[1].Y = new int[] { 0, 1, 2, 0, 0 }; figures[7].Variants[1].Y = new int[] { 0, 0, 0, 1, 2 };
-            figures[7].Variants[2].Y = new int[] { 0, 1, 2, 2, 2 }; figures[7].Variants[2].Y = new int[] { 0, 0, 0, 1, 2 };
-            figures[7].Variants[3].Y = new int[] { 0, 0, -2, -1, 0 }; figures[7].Variants[3].Y = new int[] { 0, 1, 2, 2, 2 };
+            figures[7].Variants[0].X = new int[] { 0, 0, 0, 1, 2 }; figures[7].Variants[0].Y = new int[] { 0, 1, 2, 2, 2 };
+            figures[7].Variants[1].X = new int[] { 0, 1, 2, 0, 0 }; figures[7].Variants[1].Y = new int[] { 0, 0, 0, 1, 2 };
+            figures[7].Variants[2].X = new int[] { 0, 1, 2, 2, 2 }; figures[7].Variants[2].Y = new int[] { 0, 0, 0, 1, 2 };
+            figures[7].Variants[3].X = new int[] { 0, 0, -2, -1, 0 }; figures[7].Variants[3].Y = new int[] { 0, 1, 2, 2, 2 };
 
             figures[8].Total = 4;                                // W
             figures[8].Variants = new Variant[figures[8].Total];
-            figures[8].Variants[0].Y = new int[] { 0, 0, 1, 1, 2 }; figures[8].Variants[0].Y = new int[] { 0, 1, 1, 2, 2 };
-            figures[8].Variants[1].Y = new int[] { 0, 1, -1, 0, -1 }; figures[8].Variants[1].Y = new int[] { 0, 0, 1, 1, 2 };
-            figures[8].Variants[2].Y = new int[] { 0, 1, 1, 2, 2 }; figures[8].Variants[2].Y = new int[] { 0, 0, 1, 1, 2 };
-            figures[8].Variants[3].Y = new int[] { 0, -1, 0, -2, -1 }; figures[8].Variants[3].Y = new int[] { 0, 1, 1, 2, 2 };
+            figures[8].Variants[0].X = new int[] { 0, 0, 1, 1, 2 }; figures[8].Variants[0].Y = new int[] { 0, 1, 1, 2, 2 };
+            figures[8].Variants[1].X = new int[] { 0, 1, -1, 0, -1 }; figures[8].Variants[1].Y = new int[] { 0, 0, 1, 1, 2 };
+            figures[8].Variants[2].X = new int[] { 0, 1, 1, 2, 2 }; figures[8].Variants[2].Y = new int[] { 0, 0, 1, 1, 2 };
+            figures[8].Variants[3].X = new int[] { 0, -1, 0, -2, -1 }; figures[8].Variants[3].Y = new int[] { 0, 1, 1, 2, 2 };
 
             figures[9].Total = 1;                                // X
             figures[9].Variants = new Variant[figures[9].Total];
@@ -119,12 +119,27 @@ namespace DonaldKnuthAlgoX.Pentamimo
             __Show(figures[fnr].Variants[vnr], fnr, sx, sy);
         }
 
+        public void Show(FigureRow fr)
+        {
+            __Show(figures[fr.fn].Variants[fr.vn], fr.fn, fr.sx, fr.sy);
+        }
+
+        public void Hide(int fnr, int vnr, int sx, int sy)
+        {
+            __Show(figures[fnr].Variants[vnr], names.Length - 1, sx, sy);
+        }
+
+        public void Hide(FigureRow fr)
+        {
+            __Show(figures[fr.fn].Variants[fr.vn], names.Length - 1, fr.sx, fr.sy);
+        }
+
         private void __Show(Variant v, int fnr, int sx, int sy)
         {
             Console.ForegroundColor = (ConsoleColor)fnr + 1;
             for(int j =  0; j < v.X.Length; j++)
             {
-                Console.SetCursorPosition(sx, sy);
+                Console.SetCursorPosition(sx + v.X[j], sy + v.Y[j]);
                 Console.Write(names.Substring(fnr, 1));
             }
         }
