@@ -1,6 +1,9 @@
 ﻿
 namespace DonaldKnuthAlgoX.Cells
 {
+    /// <summary>
+    /// Class for the node of the 2 dimensional 2 linked list
+    /// </summary>
     public class Cell
     {
         public int row;

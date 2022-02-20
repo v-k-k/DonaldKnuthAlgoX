@@ -1,12 +1,11 @@
 ﻿using DonaldKnuthAlgoX.Structs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DonaldKnuthAlgoX.Pentamimo
 {
+    /// <summary>
+    /// Class that shows the pentamimo figures in the console
+    /// </summary>
     public class Pentamimo
     {
         public string names = "FILNPTUVWXYZ ";

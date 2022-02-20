@@ -1,87 +1,67 @@
-﻿using DonaldKnuthAlgoX.Algorithm;
+﻿using System.Collections.Generic;
+using DonaldKnuthAlgoX.Algorithm;
 using DonaldKnuthAlgoX.Structs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System;
 
 namespace DonaldKnuthAlgoX
 {
     class Program
     {
+        List<FigureRow> frows;
+
         static void Main(string[] args)
         {
-            /*
-            Dance dance = new Dance(45);
+            Program program = new Program();
+            int boardWidth;
+            int boardHeight;
 
-            dance.AddRow(0, new[] { 24, 33, 34 });
-            dance.AddRow(1, new[] { 34, 43, 44 });
-            dance.AddRow(2, new[] { 33, 42, 43 });
-            dance.AddRow(3, new[] { 13, 14, 24 });
+            /* Example:
+             *   Values for boardWidth and boardHeight like: 
+             *      20 and 3, 12 and 5, 15 and 4, 10 and 6, etc.
+             */
 
-            dance.AddRow(4, new[] { 32, 33, 43 });
-            dance.AddRow(5, new[] { 31, 32, 41 });
-            dance.AddRow(6, new[] { 23, 32, 33 });
-            dance.AddRow(7, new[] { 23, 33, 34 });
+            program.ReadInput(out boardWidth, nameof(boardWidth));
+            program.ReadInput(out boardHeight, nameof(boardHeight));
+            Console.Clear();
 
-            dance.AddRow(8, new[] { 13, 14, 23 });
-            dance.AddRow(9, new[] { 31, 41, 42 });
-            dance.AddRow(10, new[] { 33, 34, 44 });
-            dance.AddRow(11, new[] { 33, 43, 44 });
-            */
-
-            Program pr = new Program();
-            pr.StartPent(20, 3);//(12, 5);//(15, 4);//(10, 6);//
-
-            //Dance dance = new Dance(12);
-
-            //dance.AddRow(0, new[] { 3, 6, 7 });
-            //dance.AddRow(1, new[] { 7, 10, 11 });
-            //dance.AddRow(2, new[] { 6, 9, 10 });
-            //dance.AddRow(3, new[] { 0, 1, 3 });
-
-            //dance.AddRow(4, new[] { 5, 6, 10 });
-            //dance.AddRow(5, new[] { 4, 5, 8 });
-            //dance.AddRow(6, new[] { 2, 5, 6 });
-            //dance.AddRow(7, new[] { 2, 6, 7 });
-
-            //dance.AddRow(8, new[] { 0, 1, 2 });
-            //dance.AddRow(9, new[] { 4, 8, 9 });
-            //dance.AddRow(10, new[] { 6, 7, 11 });
-            //dance.AddRow(11, new[] { 6, 10, 11 });
-
-            //dance.Go(0);
+            program.StartPentamimoGame(boardWidth: boardWidth, boardHeight: boardHeight);
             Console.Read();
         }
 
-        List<FigureRow> frows;
+        void ReadInput(out int target, string targetName)
+        {
+            string potentialTarget;
+            do
+            {
+                Console.WriteLine($"Set the integer value of the {targetName}:");
+                potentialTarget = Console.ReadLine();
+            } while (! int.TryParse(potentialTarget, out target));
+        }
 
-        void StartPent(int a, int b)
+        void StartPentamimoGame(int boardWidth, int boardHeight)
         {
             Dance dance = new Dance(12 + 60);
-            Pentamimo.Pentamimo pent = new Pentamimo.Pentamimo();
-            //pent.Show(2, 3, 5, 10);
+            Pentamimo.Pentamimo pentamimo = new Pentamimo.Pentamimo();
 
             int nr = 0;
             int fn = 0;
             frows = new List<FigureRow>();
-            foreach (Figure figure in pent.figures)
+            foreach (Figure figure in pentamimo.figures)
             {
                 int vn = 0;
                 foreach (Variant variant in figure.Variants)
                 {
-                    for (int sx = 0; sx < a; sx++)
+                    for (int sx = 0; sx < boardWidth; sx++)
                     {
-                        for (int sy = 0; sy < b; sy++)
+                        for (int sy = 0; sy < boardHeight; sy++)
                         {
                             bool can = true;
                             for (int i = 0; i < variant.X.Length; i++)
                             {
-                                if (variant.X[i] + sx < 0 || variant.X[i] + sx >= a)
+                                if (variant.X[i] + sx < 0 || variant.X[i] + sx >= boardWidth)
                                     can = false;
-                                if (variant.Y[i] + sy < 0 || variant.Y[i] + sy >= b)
+                                if (variant.Y[i] + sy < 0 || variant.Y[i] + sy >= boardHeight)
                                     can = false;
                             }
                             if (!can)
@@ -90,18 +70,13 @@ namespace DonaldKnuthAlgoX
                             dance.AddRow(nr, new int[]
                             {
                                 fn,
-                                12 + variant.X[0] + sx + a * (variant.Y[0] + sy),
-                                12 + variant.X[1] + sx + a * (variant.Y[1] + sy),
-                                12 + variant.X[2] + sx + a * (variant.Y[2] + sy),
-                                12 + variant.X[3] + sx + a * (variant.Y[3] + sy),
-                                12 + variant.X[4] + sx + a * (variant.Y[4] + sy)
+                                12 + variant.X[0] + sx + boardWidth * (variant.Y[0] + sy),
+                                12 + variant.X[1] + sx + boardWidth * (variant.Y[1] + sy),
+                                12 + variant.X[2] + sx + boardWidth * (variant.Y[2] + sy),
+                                12 + variant.X[3] + sx + boardWidth * (variant.Y[3] + sy),
+                                12 + variant.X[4] + sx + boardWidth * (variant.Y[4] + sy)
                             });
                             frows.Add(new FigureRow(fn, vn, sx, sy));
-                            //pent.Show(fn, vn, sx, sy);
-                            //Console.SetCursorPosition(0, 10);
-                            //Console.WriteLine(nr + " " + fn + " " + vn + " " + sx + " " + sy + "  ");
-                            //Console.ReadLine();
-                            //pent.Hide(fn, vn, sx, sy);
                             nr++;
                         }
                     }
@@ -109,21 +84,18 @@ namespace DonaldKnuthAlgoX
                 }
                 fn++;
             }
-            //dance.AddRow(0, new[] { 3, 6, 7 });
             foreach (var ans in dance.Go(0))
             {
-                //Console.Clear();
                 foreach (int row in ans)
-                    pent.Show(frows[row]);
+                    pentamimo.Show(frows[row]);
 
                 Thread.Sleep(10);
 
                 foreach (int row in ans)
                 {
-                    pent.Hide(frows[row]);
+                    pentamimo.Hide(frows[row]);
                     break;
                 }
-                //Console.ReadLine();
             }
         }
     }

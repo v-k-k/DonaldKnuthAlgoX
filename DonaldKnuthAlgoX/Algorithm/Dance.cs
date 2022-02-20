@@ -1,19 +1,21 @@
-﻿using DonaldKnuthAlgoX.Cells;
+﻿using System.Collections.Generic;
+using DonaldKnuthAlgoX.Cells;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DonaldKnuthAlgoX.Algorithm
 {
+    /// <summary>
+    /// Dancing links Algorithm X implementation
+    /// </summary>
     public class Dance
     {
         Header root;
         Header[] headers;
         Stack<int> answer = new Stack<int>();
+        int answersCount = 0;
 
-        //delegate 
+        public bool AnswerFound => root.R == root;
+        public int ActualColumns => headers.Length;
 
         public Dance(int columns)
         {
@@ -49,19 +51,15 @@ namespace DonaldKnuthAlgoX.Algorithm
             }
         }
 
-        int answersCount = 0;
-
         public IEnumerable<Stack<int>> Go(int step)
         {
             //Console.WriteLine(step);
             //while (head.size == 0 && head != root)
             //    head = (Header)head.R;
             if (step < 7)
-            {
                 yield return answer;
-            }
             
-            if (root.R == root)
+            if (AnswerFound)
             {
                 answersCount++;
                 Console.WriteLine($"\n\nFOUND ANSWER!!!\nTotal answers {answersCount}\n\n");
